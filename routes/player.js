@@ -30,7 +30,32 @@ playerRouter.post('/player', (req, res) => {
 })
 
 playerRouter.get('/winner', (req, res) => {
+    let winnerArray = []
       
+    Player.find({}).sort({score:-1}).limit(1)
+        .then((player) => {
+              let highestScore = player[0].score;
+                Player.find({score: highestScore})
+                    .then((winners) => {
+                           winners.forEach(winner => {
+                                winnerArray.push(winner.name)
+                           });
+                            res.status(200).json({success: true, msg: "Winner", data: {winnerArray, highestScore}, error: null})
+                    })
+        })
+        .catch((err) => {
+                res.status(500).json({success: false, msg: "", data: {}, error: err})
+        })
+})
+
+playerRouter.delete('/reset', (req, res) => {
+    Player.deleteMany({})
+        .then((player) => {
+            res.status(200).json({success: true, msg: "Players deleted", data: {}, error: null})
+        })
+        .catch((err) => {
+            res.status(500).json({success: false, msg: "", data: {}, error: err})
+        })
 })
 
 module.exports = playerRouter;
