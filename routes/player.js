@@ -5,6 +5,8 @@ const Player = mongoose.model("Player");
 
 
 playerRouter.post('/player', (req, res) => {
+
+    console.log(req.body)
       
      let {name} = req.body;
 
@@ -25,6 +27,10 @@ playerRouter.post('/player', (req, res) => {
              res.status(500).json({success: false, msg: "", data: {}, error: err})
         })
 
+})
+
+playerRouter.get('/winner', (req, res) => {
+      
 })
 
 module.exports = playerRouter;
